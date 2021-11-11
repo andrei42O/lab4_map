@@ -67,7 +67,7 @@ public class FriendshipDBRepository implements Repository<Long, Friendship> {
     @Override
     public Friendship save(Friendship entity) {
         validator.validate(entity);
-        String sql1 = String.format("select * from friendships where user_id_1 = %s and user_id_2 = %s and friendship_date = %s", entity.getID1(), entity.getID2(), entity.getDate().toString());
+        String sql1 = String.format("select * from friendships where user_id_1 = %s and user_id_2 = %s and friendship_date = '%s'", entity.getID1(), entity.getID2(), entity.getDate().toString());
         /*for (Friendship fr : findAll())
             if ((fr.getID1().equals(entity.getID1()) && fr.getID2().equals(entity.getID2())) || (fr.getID1().equals(entity.getID2()) && fr.getID2().equals(entity.getID1())))
                 return entity;*/

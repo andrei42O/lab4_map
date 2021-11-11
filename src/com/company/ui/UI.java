@@ -137,11 +137,14 @@ public class UI {
         });
     }
 
-    private void searchFriendship() throws IOException {
+    private void searchFriendship() throws Exception {
         System.out.print("Introduceti ID-ul prieteniei pe care doriti sa o cautati: ");
         String rawID = buff.readLine();
-        System.out.println(friendshipServ.searchFriendship(rawID));
-
+        Friendship friendship = friendshipServ.searchFriendship(rawID);
+        User u1 = userServ.findUser(friendship.getID1().toString());
+        User u2 = userServ.findUser(friendship.getID2().toString());
+        System.out.println( "'" + u1.getFirstName() + " " + u1.getLastName() + "' s-a imprietenit cu " +
+                "'" + u2.getFirstName() + " " + u2.getLastName() + "' in data de '" + friendship.getDate() + "'");
     }
 
     public void run(){
