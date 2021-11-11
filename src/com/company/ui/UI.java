@@ -44,6 +44,8 @@ public class UI {
         System.out.println("8 - Show users");
         System.out.println("9 - Search a users by ID");
         System.out.println("10 - Modify a user");
+        System.out.println("11 - Search a friendship");
+        System.out.println("12 - Show all friendships");
         System.out.println("x - Exit");
         System.out.print(">>> ");
     }
@@ -142,6 +144,8 @@ public class UI {
                     case 8 -> showUsers();
                     case 9 -> searchUser();
                     case 10 -> updateUser();
+                    case 11 -> searchFriendship();
+                    case 12 -> showFriendships();
                     case 1337 -> { System.out.println("Shutting down..."); ok = false; }
                     default -> System.out.println("Invalid command!\n");
                 }
@@ -157,6 +161,28 @@ public class UI {
             }
         }
     }
+
+    private void showFriendships() throws Exception{
+        System.out.println("All friendships in the social network:");
+        friendshipServ.findAll().forEach(friendship -> {
+            try {
+                User u1 = userServ.findUser(friendship.getID1().toString());
+                User u2 = userServ.findUser(friendship.getID2().toString());
+                System.out.println( "'" + u1.getFirstName() + " " + u1.getLastName() + "' s-a imprietenit cu " +
+                                    "'" + u2.getFirstName() + " " + u2.getLastName() + "' in data de '" + friendship.getDate() + "'");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void searchFriendship() throws IOException {
+        System.out.print("Introduceti ID-ul prieteniei pe care doriti sa o cautati: ");
+        String rawID = buff.readLine();
+        System.out.println(friendshipServ.searchFriendship(rawID));
+
+    }
+
 
 
 }

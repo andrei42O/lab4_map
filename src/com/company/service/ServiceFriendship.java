@@ -4,6 +4,7 @@ package com.company.service;
 import com.company.domain.Friendship;
 import com.company.domain.User;
 import com.company.domain.validators.FriendException;
+import com.company.domain.validators.FriendshipValidator;
 import com.company.repository.Repository;
 
 import java.util.HashSet;
@@ -88,8 +89,22 @@ public class ServiceFriendship {
             Friendship ret = friendshipRepo.save(friendship);
             if(ret == null)
                 return;
+            User u1 = userRepo.findOne(Long.parseLong(strID1));
+            User u2 = userRepo.findOne(Long.parseLong(strID2));
+            throw new FriendException("'" + u1.getFirstName() + " " + u1.getLastName() + "' este deja prieten cu " +
+                    "'" + u2.getFirstName() + " " + u2.getLastName() + "' din data de '" + friendship.getDate() + "'");
         }
         throw new FriendException("An error occured, " + strID1 + " cannot be friend with " + strID2 + "\n");
     }
 
+    public Iterable<Friendship> findAll(){
+        return friendshipRepo.findAll();
+    }
+
+    public Friendship searchFriendship(String rawID) {
+        Friendship ret = friendshipRepo.findOne(Long.parseLong(rawID));
+        if(ret == null)
+            throw new FriendException("There is not friendship with this ID!\n");
+        return ret;
+    }
 }
