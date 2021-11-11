@@ -68,6 +68,7 @@ public class FriendshipDBRepository implements Repository<Long, Friendship> {
     public Friendship save(Friendship entity) {
         validator.validate(entity);
         String sql1 = String.format("select * from friendships where user_id_1 = %s and user_id_2 = %s and friendship_date = '%s'", entity.getID1(), entity.getID2(), entity.getDate().toString());
+        String sql2 = String.format("select * from friendships where user_id_1 = %s and user_id_2 = %s and friendship_date = '%s'", entity.getID2(), entity.getID1(), entity.getDate().toString());
         /*for (Friendship fr : findAll())
             if ((fr.getID1().equals(entity.getID1()) && fr.getID2().equals(entity.getID2())) || (fr.getID1().equals(entity.getID2()) && fr.getID2().equals(entity.getID1())))
                 return entity;*/
@@ -75,8 +76,10 @@ public class FriendshipDBRepository implements Repository<Long, Friendship> {
         try (Connection connection = DriverManager.getConnection(this.url, this.username, this.password);
              PreparedStatement statement = connection.prepareStatement(sql);
              PreparedStatement statement1 = connection.prepareStatement(sql1);
-             ResultSet rs = statement1.executeQuery()) {
-            if(!rs.next()) {
+             PreparedStatement statement2 = connection.prepareStatement(sql2);
+             ResultSet rs1 = statement1.executeQuery();
+             ResultSet rs2 = statement2.executeQuery()) {
+            if(!rs1.next() && !rs2.next()) {
                 statement.executeUpdate();
                 return null;
             }
