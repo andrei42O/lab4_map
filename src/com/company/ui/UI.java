@@ -123,6 +123,27 @@ public class UI {
         friendshipServ.getFriends(rawID).forEach(System.out::println);
     }
 
+    private void showFriendships() throws Exception{
+        System.out.println("All friendships in the social network:");
+        friendshipServ.findAll().forEach(friendship -> {
+            try {
+                User u1 = userServ.findUser(friendship.getID1().toString());
+                User u2 = userServ.findUser(friendship.getID2().toString());
+                System.out.println( "'" + u1.getFirstName() + " " + u1.getLastName() + "' s-a imprietenit cu " +
+                                    "'" + u2.getFirstName() + " " + u2.getLastName() + "' in data de '" + friendship.getDate() + "'");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void searchFriendship() throws IOException {
+        System.out.print("Introduceti ID-ul prieteniei pe care doriti sa o cautati: ");
+        String rawID = buff.readLine();
+        System.out.println(friendshipServ.searchFriendship(rawID));
+
+    }
+
     public void run(){
         int command;
         boolean ok = true;
@@ -161,28 +182,4 @@ public class UI {
             }
         }
     }
-
-    private void showFriendships() throws Exception{
-        System.out.println("All friendships in the social network:");
-        friendshipServ.findAll().forEach(friendship -> {
-            try {
-                User u1 = userServ.findUser(friendship.getID1().toString());
-                User u2 = userServ.findUser(friendship.getID2().toString());
-                System.out.println( "'" + u1.getFirstName() + " " + u1.getLastName() + "' s-a imprietenit cu " +
-                                    "'" + u2.getFirstName() + " " + u2.getLastName() + "' in data de '" + friendship.getDate() + "'");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    private void searchFriendship() throws IOException {
-        System.out.print("Introduceti ID-ul prieteniei pe care doriti sa o cautati: ");
-        String rawID = buff.readLine();
-        System.out.println(friendshipServ.searchFriendship(rawID));
-
-    }
-
-
-
 }
