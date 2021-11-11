@@ -65,7 +65,8 @@ public class ServiceFriendship {
         if(userRepo.findOne(Long.parseLong(strID1)) != null && userRepo.findOne(Long.parseLong(strID2)) != null) {
             Friendship ret = null;
             for (Friendship friendship : friendshipRepo.findAll())
-                if(friendship.getID1().equals(Long.parseLong(strID1)) && friendship.getID2().equals(Long.parseLong(strID2))){
+                if((friendship.getID1().equals(Long.parseLong(strID1)) && friendship.getID2().equals(Long.parseLong(strID2))) ||
+                        (friendship.getID1().equals(Long.parseLong(strID2)) && friendship.getID2().equals(Long.parseLong(strID1)))) {
                     ret = friendshipRepo.delete(friendship.getId());
                     break;
                 }

@@ -67,16 +67,23 @@ public class FriendshipDBRepository implements Repository<Long, Friendship> {
     @Override
     public Friendship save(Friendship entity) {
         validator.validate(entity);
-        for (Friendship fr : findAll())
+        String sql1 = String.format("select * from friendships where user_id_1 = %s and user_id_2 = %s and friendship_date = %s", entity.getID1(), entity.getID2(), entity.getDate().toString());
+        /*for (Friendship fr : findAll())
             if ((fr.getID1().equals(entity.getID1()) && fr.getID2().equals(entity.getID2())) || (fr.getID1().equals(entity.getID2()) && fr.getID2().equals(entity.getID1())))
-                return entity;
+                return entity;*/
         String sql = String.format("insert into friendships (id, user_id_1, user_id_2, friendship_date) values (%s, %s, %s, '%s')", entity.getId(), entity.getID1(), entity.getID2(), entity.getDate().toString());
         try (Connection connection = DriverManager.getConnection(this.url, this.username, this.password);
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.executeUpdate();
+             PreparedStatement statement = connection.prepareStatement(sql);
+             PreparedStatement statement1 = connection.prepareStatement(sql1);
+             ResultSet rs = statement1.executeQuery()) {
+            if(!rs.next()) {
+                statement.executeUpdate();
+                return null;
+            }
         } catch (SQLException throwable) {
             return entity;
         }
+        //return null;
         return null;
     }
 
