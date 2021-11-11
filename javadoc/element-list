@@ -1,0 +1,10 @@
+com.company
+com.company.domain
+com.company.domain.validators
+com.company.repository
+com.company.repository.file
+com.company.repository.InMemoryRepository
+com.company.service
+com.company.service.algorithms
+com.company.tests
+com.company.ui
