@@ -1,5 +1,6 @@
 package com.company.service;
 
+import com.company.domain.Entity;
 import com.company.domain.Friendship;
 import com.company.domain.User;
 import com.company.domain.validators.FriendException;
@@ -42,10 +43,7 @@ public class ServiceUtilizator {
             Long id = Long.parseLong(rawID);
             List<Friendship> temp = new ArrayList<>();
             friendshipRepo.findAll().forEach(temp::add);
-            for (Friendship friendship : temp) {
-                if (friendship.getID1().equals(id) || friendship.getID2().equals(id))
-                    friendshipRepo.delete(friendship.getId());
-            }
+            temp.stream().filter(friendship -> friendship.getID1().equals(id) || friendship.getID2().equals(id)).map(Entity::getId).forEach(friendshipRepo::delete);
             return;
         }
         throw new Exception("There is no user with this id in our social network!\n");
