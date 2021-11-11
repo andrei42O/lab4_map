@@ -8,5 +8,7 @@ public class Main {
         Tests.run();
         UI app = new UI();
         app.run();
+
+        System.out.println("salut");
     }
 }
